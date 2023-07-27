@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/web//user/auth//register/regiser.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <div class="hint"></div>
+    <div class="cart-box">
+        <div class="cart-left"></div>
+        <form   class="cart-right" enctype="application/x-www-form-urlencoded">
+            <div class="logo"></div>
+            <div class="username input-box">
+                <input type="text" id="username" name="username" placeholder="用户名">
+            </div>
+            <div class="password input-box">
+                <input type="password" id="password" name="password" placeholder="密码(不小于6位)">        
+            </div>
+
+            <button class="submit" type="button">login</button>
+            <div class="go">
+                <a href="/web/user/auth/register/register.html">注册</a>
+                <a href="/web/user/auth/resetPassword/resetPassword.html">重置密码</a>
+            </div>
+        </form>
+    </div>
+    <script type="module" src="/web/user/auth/login/login.js"></script>
+</body>
+</html>

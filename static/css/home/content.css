@@ -1,0 +1,349 @@
+.chunk {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+.about-us {
+  /* display: flex; */
+  /* flex-direction: column; */
+}
+
+.us-restful-pic {
+  height: 100%;
+  background: url("/images/animations/cols/Pz-0013.png") no-repeat center / cover;
+  background-attachment: fixed;
+}
+.us-introduce {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 40%;
+  background-color: var(--secondary-bg-color);
+  padding: 0 10%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+}
+
+.us-introduce > div {
+  display: grid;
+  grid-template-rows: repeat(2, 1fr);
+  border: var(--debug-border);
+  padding: 20% 0;
+  grid-row-gap: 10px;
+  
+}
+.us-introduce::before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  top: 0;
+  background-color: var(--primary-emphasis-color);
+}
+.introduce-item > div:nth-child(1) {
+  align-self: end;
+  border: var(--debug-border);
+  font-size: 24px;
+  font-weight: 500;
+  
+}
+.introduce-item > div:nth-child(2) {
+  color: var(--secondary-text-color);
+  border: var(--debug-border);
+  align-self: start;
+}
+
+/* blog */
+.blog-restful-pic {
+  width: 100%;
+  height: 100%;
+  background: url("/images/animations/cols/Pz-0051.jpg") no-repeat center / cover;
+  background-attachment: fixed;
+}
+
+.blog-introduce {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 30%;
+  height: 100%;
+  background: var(--secondary-bg-color);
+  background-attachment: fixed;
+  padding: 8rem 3rem;
+}
+
+.blog-introduce::before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 3px;
+  height: 100%;
+  left: 0;
+  top: 0;
+  background-color: var(--primary-emphasis-color);
+}
+
+.blog-introduce-title {
+  font-size: 2rem;
+  font-weight: 500;
+}
+.blog-introduce-tip {
+  font-size: 1.5rem;
+  margin: 1.25rem 0 1.5rem;
+}
+.blog-introduce p {
+  margin: 0.5rem 0;
+  color: var(--secondary-text-color);
+}
+
+.blog-go {
+  color: var(--secondary-text-color);
+  margin-top: 2rem;
+  display: block;
+  width: 10rem;
+  /* padding: 10px; */
+  font-size: 1.2rem;
+  height: 4rem;
+  border: var( --secondary-text-color) solid;
+
+  line-height: 4rem;
+  text-align: center;
+}
+.blog-go:hover {
+  color: var( --primary-text-color);
+  border: solid var( --primary-text-color);
+}
+/* navside */
+.navside-restful-pic {
+  width: 100%;
+  height: 100%;
+  background: url("/images/animations/cols/Pz-0052.jpg") no-repeat center / cover;
+  background-attachment: fixed;
+}
+
+.navside-introduce {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 30%;
+  height: 100%;
+  background: var(--secondary-bg-color);
+  background-attachment: fixed;
+  padding: 8rem 3rem;
+}
+
+.navside-introduce::before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 3px;
+  height: 100%;
+  right: 0;
+  top: 0;
+  background-color: var(--primary-emphasis-color);
+}
+
+.navside-introduce-title {
+  font-size: 2rem;
+  font-weight: 500;
+}
+.navside-introduce-tip {
+  font-size: 1.5rem;
+  margin: 1.25rem 0 1.5rem;
+}
+.navside-introduce p {
+  margin: 0.5rem 0;
+  color: var(--secondary-text-color);
+}
+
+.navside-go {
+  color: var(--secondary-text-color);
+  margin-top: 2rem;
+  display: block;
+  width: 10rem;
+  /* padding: 10px; */
+  font-size: 1.2rem;
+  height: 4rem;
+  border: var(--border-color) solid;
+  /* border-radius: 0.5rem; */
+  line-height: 4rem;
+  text-align: center;
+}
+
+.navside-go:hover {
+  color: var( --primary-text-color);
+  border: solid var( --primary-text-color);
+}
+
+.like-introduce {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+
+.like-title {
+    margin-top: 8%;
+    font-size: 2rem;
+}
+.like-tip{
+    color: var(--secondary-text-color);
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+}
+
+.like-list {
+    position: relative;
+    margin-top: 3rem;
+    flex: 1;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 4rem 10%;
+    border: var(--debug-border);
+}
+.like-list::before {
+    content: "";
+    position: absolute;
+    width: 25%;
+    height: 3px;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--primary-emphasis-color);
+
+}
+.like-item {
+    flex: 1;
+    display: flex;
+    margin: 0 1.5rem;
+    flex-direction: column;
+    align-items: center;
+    border: var(--debug-border);
+}
+.like-type-avatar {
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  .like-type-CG > .like-type-avatar {
+  background: url("/images/avatars/av-0005.png") no-repeat center / cover;
+}
+.like-type-ACG > .like-type-avatar {
+  background: url("/images/avatars/av-0001.jpg") no-repeat center / cover;
+}
+.like-type-Music > .like-type-avatar {
+  background: url("/images/avatars/av-0002.jpg") no-repeat center / cover;
+}
+.like-type-title {
+    font-size: 1.2rem;
+    margin-top: 1.5rem;
+}
+.like-type-text {
+    color: var(--secondary-text-color);
+    margin-top: 1.5rem;
+}
+
+
+
+/* 去下一个 */
+.go-next {
+  position: absolute;
+  display: block;
+  bottom: 0;
+  left: 50%;
+  width: 5rem;
+  height: 5rem;
+  transform: translateX(-50%);
+  border: var(--debug-border);
+
+}
+html {
+  scroll-behavior: smooth;
+}
+.go-next::before {
+  content: "v";
+  font-size: 2rem;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  animation: a-updown 0.6s ease infinite alternate;
+}
+
+@keyframes a-updown{
+ from{
+  transform: translate(-50%,-50%);
+} to {
+  transform: translate(-50%,-80%);
+}
+}
+
+
+
+
+
+/* show me */
+.show-me {
+  width: 80%;
+  height: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  border: var(--debug-border);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.me-avator {
+  width: 16rem;
+  height: 16rem;
+  border: var(--debug-border);
+  border-radius: 50%;
+  background: url("/images/avatars/av-0002.jpg") no-repeat center / cover;
+  animation: jumpAnimation 1s infinite;
+}
+
+@keyframes jumpAnimation {
+  0%,100% {
+    transform: translateY(0);
+  }50%{
+    transform: translateY(-20px);
+  }
+}
+
+.me-introduce {
+
+  margin-left: 2rem;
+}
+.me-introduce > p{
+  color: var(--color-white);
+}
+.me-introduce > p:nth-child(1){
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+.me-introduce > p:nth-child(n+2){
+  line-height: 1.5rem;
+}
+
+#header > .pic::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0,.5);
+  z-index: -9;
+}
+
