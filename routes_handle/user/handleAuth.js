@@ -23,9 +23,9 @@ const handlePersonalDetail = async (req, res) => {
         }
 
         // 标签数🚩 笔记数 类别数
-        let notesResult = await NoteModel.find({},{tags:1})
-        let distinctTagsResult = await NoteModel.find({},{tags:1}).distinct('tags') //distinct: e:不同的 ,,也可进行去重
-        let distinctTypeResult = await NoteModel.find({},{tags:1}).distinct('type') //distinct: e:不同的 ,,也可进行去重
+        let notesResult = await NoteModel.find({_id:findUserResult._id},{tags:1})
+        let distinctTagsResult = await NoteModel.find({_id:findUserResult._id},{tags:1}).distinct('tags') //distinct: e:不同的 ,,也可进行去重
+        let distinctTypeResult = await NoteModel.find({_id:findUserResult._id},{tags:1}).distinct('type') //distinct: e:不同的 ,,也可进行去重
         let tagsCount = distinctTagsResult.length
         let notesCount = notesResult.length
         let typeCount = distinctTypeResult.length
@@ -70,11 +70,21 @@ const handleGetTags = async (req, res) => {
         // 个人信息   
         console.log('通过token权限验证')
 
+        const userId = req.user.userId
+        let findUserResult = await UserModel.findOne({_id:userId},{password:0}) //查询个人信息，去掉password字段
+        if(!findUserResult) {
+            console.log('查询用户信息失败')
+            return res.cc('不存在该用户')
+        }
+
         // 返回该用户所有标签
         
+
         let distinctTagsResult = await NoteModel
-        .find({},{tags:1})
+        .find({userId},{tags:1})
         .distinct('tags') //distinct: e:不同的 ,,也可进行去重
+
+        console.log('dist:----tags',distinctTagsResult)
 
         let tagsResult = await NoteTagModel.find({_id:{$in: distinctTagsResult}})
 
@@ -91,11 +101,17 @@ const handleGetTypes = async (req, res) => {
     try {
         // 个人信息   
         console.log('通过token权限验证')
+        const userId = req.user.userId
+        let findUserResult = await UserModel.findOne({_id:userId},{password:0}) //查询个人信息，去掉password字段
+        if(!findUserResult) {
+            console.log('查询用户信息失败')
+            return res.cc('不存在该用户')
+        }
 
         // 返回该用户所有类别
         
         let distinctTypesResult = await NoteModel
-        .find({},{type:1})
+        .find({userId},{type:1})
         .distinct('type') //distinct: e:不同的 ,,也可进行去重
 
         let typesResult = await NoteTypeModel.find({_id:{$in: distinctTypesResult}})
@@ -111,14 +127,16 @@ const handleGetTypes = async (req, res) => {
 // 根据标签id获取笔记
 const handleNotesByTagId = async (req, res) => {
     try {
+
         let tagId = req.params.tagId
+        const userId = req.user.userId
         // 个人信息   
         console.log('通过token权限验证')
 
         // 返回该用户所有类别
         
         let NotesResult = await NoteModel
-        .find({tags:tagId})
+        .find({userId,tags:tagId})
         .sort({createTime:-1})
 
       
@@ -135,13 +153,14 @@ const handleNotesByTagId = async (req, res) => {
 const handleNotesByTypeId = async (req, res) => {
     try {
         let typeId = req.params.typeId
+        const userId = req.user.userId
         // 个人信息   
         console.log('通过token权限验证')
 
         // 返回该用户所有类别
         
         let NotesResult = await NoteModel
-        .find({type:typeId})
+        .find({userId,type:typeId})
         .sort({createTime:-1})
 
       
