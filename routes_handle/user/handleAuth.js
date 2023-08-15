@@ -15,17 +15,17 @@ const handlePersonalDetail = async (req, res) => {
         console.log('通过token权限验证')
 
 
-        const username = req.user.username
-        let findUserResult = await UserModel.findOne({username},{password:0}) //查询个人信息，去掉password字段
+        const userId = req.user.userId
+        let findUserResult = await UserModel.findOne({_id:userId},{password:0}) //查询个人信息，去掉password字段
         if(!findUserResult) {
             console.log('查询用户信息失败')
             return res.cc('不存在该用户')
         }
 
         // 标签数🚩 笔记数 类别数
-        let notesResult = await NoteModel.find({_id:findUserResult._id},{tags:1})
-        let distinctTagsResult = await NoteModel.find({_id:findUserResult._id},{tags:1}).distinct('tags') //distinct: e:不同的 ,,也可进行去重
-        let distinctTypeResult = await NoteModel.find({_id:findUserResult._id},{tags:1}).distinct('type') //distinct: e:不同的 ,,也可进行去重
+        let notesResult = await NoteModel.find({userId},{tags:1})
+        let distinctTagsResult = await NoteModel.find({userId},{tags:1}).distinct('tags') //distinct: e:不同的 ,,也可进行去重
+        let distinctTypeResult = await NoteModel.find({userId},{tags:1}).distinct('type') //distinct: e:不同的 ,,也可进行去重
         let tagsCount = distinctTagsResult.length
         let notesCount = notesResult.length
         let typeCount = distinctTypeResult.length
