@@ -13,7 +13,15 @@ let UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true 
-    }
+    },
+    nickname: {
+        type: String,
+        default:"" 
+    },
+    email: {
+        type: String,
+        default:"" 
+    },
 })
 
 // 创建文档模型对象

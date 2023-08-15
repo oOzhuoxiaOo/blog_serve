@@ -5,9 +5,15 @@ const bodyParser = require('body-parser')
 const db = require('./MongoDB/connectDB/db')
 const mid_send = require('./middleware/mid_send')
 const cookieParser = require('cookie-parser')
+
+const cors = require('cors'); //跨域解决方案
+
+
 // 导入路由
 const routeUser = require('./routes/user/routeUser')
 const routeAuth = require('./routes/user/routeAuth')
+
+
 
 // 创建应用对象
 const app = express();
@@ -20,6 +26,10 @@ const app = express();
 
 // 🚩设置中间件
 
+app.use(cors({
+    // credentials:true, //允许携带凭证(cookie)
+    origin:'*',
+})) //允许所有源跨域
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))

@@ -22,11 +22,11 @@ const handleLogin = async (req, res) => {
             if (compareResult) {
                 // 用户认证成功，生成 Token
                 const token = jwt.sign({ userId: user._id, username: user.username }, SECRETKEY, {
-                    expiresIn: '1h' // Token 过期时间，可以根据需求设置其他时间
+                    expiresIn: '12h' // Token 过期时间，可以根据需求设置其他时间
                 })
 
                  // 将 Token 设置到 Cookie 中
-                res.cookie('token', token, { httpOnly: true, maxAge: 60*60*1000 }); // 设置 HttpOnly 属性，增加安全性
+                res.cookie('token', token, { httpOnly: true, maxAge: 12*60*60*1000 }); // 设置 HttpOnly 属性，增加安全性
         
                 return res.cc('登录成功',0)
   
@@ -101,7 +101,7 @@ const handleResetPassword = async (req, res) => {
             // 如果匹配成功，则将进行修改密码
             if (compareResult) {
                 // 将明文密码加密
-                let hashResult = await bcrypt.hash(req.body.password, saltRounds)
+                let hashResult = await bcrypt.hash(req.body.newPassword, saltRounds)
                 // 操作数据库修改密码
                 let updateResult = await UserModel.updateOne(user, { password: hashResult })
                 if (!updateResult) {
