@@ -45,6 +45,7 @@ route.post('/publish',mid_token.verifyToken,upload.single('noteImg'),handleAuth.
 route.post('/upload',mid_token.verifyToken,upload.single('noteImg'),handleAuth.handleUpload)
 // get
 route.get('/me',mid_token.verifyToken,handleAuth.handlePersonalDetail)
+route.get('/auth/login',mid_token.verifyToken,handleAuth.handleIsLogin)
 route.get('/notes',mid_token.verifyToken,handleAuth.handleNotes)
 route.get('/tags',mid_token.verifyToken,handleAuth.handleGetTags)
 route.get('/types',mid_token.verifyToken,handleAuth.handleGetTypes)

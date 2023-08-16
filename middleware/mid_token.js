@@ -8,7 +8,7 @@ const verifyToken = async (req,res,next)=>{
     const token = req.cookies.token
 
     if(!token) {
-        return res.cc('没有携带token')
+        return res.cc('没有携带token',10) //错误代码10 未携带token
     }
     try{
         // 解析token

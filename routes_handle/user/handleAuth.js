@@ -64,6 +64,9 @@ const handlePersonalDetail = async (req, res) => {
 
 
 }
+const handleIsLogin = async (req, res) => {
+    res.json({code:0,msg:'已登录'})
+}
 
 const handleGetTags = async (req, res) => {
     try {
@@ -349,5 +352,6 @@ module.exports = {
     handleGetTags,
     handleGetTypes,
     handleNotesByTagId,
-    handleNotesByTypeId
+    handleNotesByTypeId,
+    handleIsLogin
 }
