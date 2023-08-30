@@ -23,11 +23,11 @@ let NoteSchema = new mongoose.Schema({
     },
     createTime: {
         type: Date,
-        default: new Date() //只在新建文档不传值起作用
+        default: () => new Date() //只在新建文档不传值起作用
     },
     updateTime: {
         type: Date,
-        default: new Date() //要想修改更新时间，需要手动设置文档更新upteTime
+        default: ()=> new Date() //要想修改更新时间，需要手动设置文档更新upteTime
     },
     mdHtml: {
         type: String
