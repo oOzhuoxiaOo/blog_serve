@@ -5,10 +5,10 @@ const {SECRETKEY} = require('../config/config')
 
 const verifyToken = async (req,res,next)=>{
     // 获取token
-    const token = req.cookies.token
+    const token = req.headers.authorization
 
     if(!token) {
-        return res.cc('没有携带token',10) //错误代码10 未携带token
+        return res.send({code:401,msg:"没有携带token"}) //错误状态吗401 未携带token(登录授权)
     }
     try{
         // 解析token
@@ -19,7 +19,7 @@ const verifyToken = async (req,res,next)=>{
         next()
     }catch(err){
         // token验证失败，返回错误信息
-        res.cc('无效的token')
+        return res.send({code:401,msg:"无效的token"})
     }
 
 }

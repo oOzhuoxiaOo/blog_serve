@@ -13,9 +13,11 @@
     - [x] api返回笔记
 - [ ] 数据库设计
     - [ ] user
-    - [ ] note
+    - [ ] notes
     - [ ] tags
     - [ ] types
+- [] 优化
+    - [] 服务器上提交时间为同一时间
 
 
 ## 茶楼补缺
@@ -49,4 +51,18 @@ let hashResult = await bcrypt.hash(req.body.newPassword, saltRounds)
 
 
 
+### 服务器上提交时间为同一时间
+未知原因，
+resolve: 将默认事件new Data()改为函数式返回new Data()
 
+
+
+
+Multer
+Multer 是一个node.js中间件，用于处理 multipart/form-data类型的表单数据，主要用于上传文件。
+在form表单上要加上 enctype=“multipart/form-data” 的属性。
+Multer 不会处理任何非 multipart/form-data 类型的表单数据。
+不要将 Multer 作为全局中间件使用，因为恶意用户可以上传文件到一个你没有预料到的路由，应该只在你需要处理上传文件的路由上使用。
+————————————————
+版权声明：本文为CSDN博主「蒲公英芽」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。
+原文链接：https://blog.csdn.net/Charissa2017/article/details/105207422

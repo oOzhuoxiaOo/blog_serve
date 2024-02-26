@@ -8,19 +8,33 @@ const mongoose = require('mongoose')
 let UserSchema = new mongoose.Schema({
     username: {
         type: String,
-        required: true 
+        required: true
     },
     password: {
         type: String,
-        required: true 
+        required: true
     },
     nickname: {
         type: String,
-        default:"" 
+        default: ""
     },
     email: {
         type: String,
-        default:"" 
+        default: ""
+    },
+    avatar: {
+        type: String,
+        default: ""
+    },
+    friends: [
+        {
+            type: mongoose.Schema.Types.ObjectId, //数据类型为objctid
+            ref: 'friends' //与NoteTagModel模型关联,注意此处为集合名称，不是模型名称
+        }
+    ],
+    isDeleted: {
+        type: Boolean,
+        default: false
     },
 })
 

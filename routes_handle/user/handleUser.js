@@ -25,18 +25,29 @@ const handleLogin = async (req, res) => {
                     expiresIn: '12h' // Token 过期时间，可以根据需求设置其他时间
                 })
 
-                 // 将 Token 设置到 Cookie 中
-                res.cookie('token', token, { httpOnly: true, maxAge: 12*60*60*1000 }); // 设置 HttpOnly 属性，增加安全性
-        
-                return res.cc('登录成功',0)
+                 // 将 Token 设置到 data 中
+
+                return res.send({
+                    code:0,
+                    message:'登录成功',
+                    data: {
+                        token:token
+                    }
+                })
   
             } else {
-                return res.cc('密码错误，登录失败', 1)
+                return res.send({
+                    code:401,
+                    message:"登录失败，密码错误"
+                })
             }
         }
 
         console.log('登录失败，不存在该账户')
-        res.cc("登录失败，不存在该账户")
+        res.send({
+            code:401,
+            message:"不存在该用户"
+        })
 
     } catch (err) {
         console.log('捕获到异常', err)
@@ -60,7 +71,10 @@ const handleRegister = async (req, res) => {
 
         if (data) {
             console.log('账户已存在')
-            return res.cc('账户已被注册，请选择新账户')
+            return res.send({
+                code:401,
+                message:"账号已被注册，请选择新账户"
+            })
         }
 
         // 获取添加用户结果
@@ -72,10 +86,16 @@ const handleRegister = async (req, res) => {
 
 
         console.log(req.body)
-        res.cc('注册成功', 0)
+        res.send({
+            code:0,
+            message:"注册成功"
+        })
     } catch (err) {
         console.log('捕获到异常', err)
-        res.send('出错啦')
+        res.send({
+            code:500,
+            message:"服务器异常"
+        })
     }
 }
 
@@ -106,22 +126,34 @@ const handleResetPassword = async (req, res) => {
                 let updateResult = await UserModel.updateOne(user, { password: hashResult })
                 if (!updateResult) {
                     console.log('内部错误,修改密码失败')
-                    return res.cc('内部错误，修改密码失败')
+                    return res.send({
+                        code:500,
+                        message:"服务器异常"
+                    })
                 }
                 return res.cc('修改密码成功', 0)
             } else {
-                return res.cc('密码错误，请检查密码', 1)
+                return res.send({
+                    code:401,
+                    message:"密码错误，请检查密码"
+                })
             }
 
 
         }
 
         console.log('2.重置密码失败，请检查账户名和密码')
-        res.cc('不存在该账户')
+        res.send({
+            code:401,
+            message:"不存在该账户"
+        })
 
     } catch (err) {
         console.log('捕获到异常', err)
-        res.send('出错啦')
+        res.send({
+            code:500,
+            message:"服务器异常"
+        })
     }
 }
 

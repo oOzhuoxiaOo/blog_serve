@@ -44,7 +44,12 @@ let NoteSchema = new mongoose.Schema({
     },
     img: {
         type: Object,
-    }
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
+    },
+
 
 })
 

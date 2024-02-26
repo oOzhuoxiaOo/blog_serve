@@ -3,7 +3,9 @@ const express = require('express')
 const handleAuth = require('../../routes_handle/user/handleAuth')
 const mid_token =require('../../middleware/mid_token')
 const multer = require('multer') // 文件处理模块包
+const m_upload = require("../../middleware/mid_upload")
 const path = require('path')
+
 
 // 创建应用对象
 const route = express.Router();
@@ -14,23 +16,6 @@ console.log('我是路由Auth')
 
 
 
-// 设置文件上传目录和文件名
-const storage = multer.diskStorage({
-    // 配置文件上传目录
-    destination: function (req, file, cb) { //destination: 目的地
-        // const uploadPath = path.join(__dirname,'../../static/images/notes')
-        // 回调第一个参数为错误对象，设为null标识没有错误
-      cb(null, 'static/images/notes') // 文件上传目录 (此处标识应用服务，及app服务再的位置)
-    },
-    //配置文件保存名称
-    filename: function (req, file, cb) { 
-      cb(null, Date.now() + '-' + file.originalname) // 文件名
-    }
-  });
-
-  
-const upload = multer({storage}) //文件处理实例
-
 
 
 
@@ -40,9 +25,11 @@ const upload = multer({storage}) //文件处理实例
 
 // 设置路由
 // post
-route.post('/publish',mid_token.verifyToken,upload.single('noteImg'),handleAuth.handlePublish)
+route.post('/publish',mid_token.verifyToken,m_upload.upload.single('noteImg'),handleAuth.handlePublish)
+route.post('/avatar/upload',mid_token.verifyToken,m_upload.avatarUpload.single('avatarImg'),handleAuth.handleUserAvatarUpload)
+route.post('/friends/write',mid_token.verifyToken,handleAuth.handleAddFriendLink)
 // single('<文件字段名>')
-route.post('/upload',mid_token.verifyToken,upload.single('noteImg'),handleAuth.handleUpload)
+route.post('/upload',mid_token.verifyToken,m_upload.upload.single('noteImg'),handleAuth.handleUpload)
 // get
 route.get('/me',mid_token.verifyToken,handleAuth.handlePersonalDetail)
 route.get('/auth/login',mid_token.verifyToken,handleAuth.handleIsLogin)
@@ -50,6 +37,24 @@ route.get('/notes',mid_token.verifyToken,handleAuth.handleNotes)
 route.get('/tags',mid_token.verifyToken,handleAuth.handleGetTags)
 route.get('/types',mid_token.verifyToken,handleAuth.handleGetTypes)
 route.get('/notes/tags/:tagId',mid_token.verifyToken,handleAuth.handleNotesByTagId)
-route.get('/notes/types/:typeId',mid_token.verifyToken,handleAuth.handleNotesByTypeId)
+route.get('/chart',mid_token.verifyToken,handleAuth.handleChart)
 
+route.get('/notes/types/:typeId',mid_token.verifyToken,handleAuth.handleNotesByTypeId)
+route.get('/notes/types',mid_token.verifyToken,handleAuth.handleConTypes)
+route.get('/notes/tags',mid_token.verifyToken,handleAuth.handleConTags)
+route.get('/self',mid_token.verifyToken,handleAuth.handleGetSelfByToken)
+route.get('/',mid_token.verifyToken,handleAuth.handleGetUsers)
+// 友情链接
+route.get('/friends',mid_token.verifyToken,handleAuth.handleGetFriendLink)
+// delete
+route.delete('/notes/:noteId',mid_token.verifyToken,handleAuth.handleDeleteNotesByNoteId)
+route.delete('/:id',mid_token.verifyToken,handleAuth. handleDeleteUserByUserId)
+route.delete('/friends/:id',mid_token.verifyToken,handleAuth. handleDeleteFriendLink)
+route.delete('/notes/tags/:id',mid_token.verifyToken,handleAuth.handleDeleteTag)
+route.delete('/notes/types/:id',mid_token.verifyToken,handleAuth.handleDeleteType)
+// patch
+route.patch('/:id',mid_token.verifyToken,handleAuth.handlePatchUserById)
+route.patch('/friends/:id',mid_token.verifyToken,handleAuth.handleUpdateFriendLink)
+route.patch('/notes/tags/:id',mid_token.verifyToken,handleAuth.handleUpdateTag)
+route.patch('/notes/types/:id',mid_token.verifyToken,handleAuth.handleUpdateType)
 module.exports = route
