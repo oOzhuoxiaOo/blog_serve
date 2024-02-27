@@ -1,3 +1,5 @@
 node_modules/
 
-static/
+# 忽略static目录下所有
+static/*
+!static/**/*.gitkeep
