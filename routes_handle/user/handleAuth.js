@@ -355,11 +355,11 @@ const handleUserAvatarUpload = async (req, res) => {
         const oldAvatarInfo = await UserModel
             .findOne({ _id: userId }, { avatar: 1 })
         // 如果存在旧头像，根据旧头像url删除旧头像
-        if (oldAvatarInfo) {
-            const oldAvatarPath = path.join(config.DIRNAME, oldAvatarInfo.avatar)
-            console.log("oldAvatarPath:", oldAvatarPath)
-            await fs.unlink(oldAvatarPath)
-        }
+        // if (oldAvatarInfo) {
+        //     const oldAvatarPath = path.join(config.DIRNAME, oldAvatarInfo.avatar)
+        //     console.log("oldAvatarPath:", oldAvatarPath)
+        //     await fs.unlink(oldAvatarPath)
+        // }
 
         const avatar = req.file.path.replace(/\\/g, '/') //纠正规范图片路径格式
 
