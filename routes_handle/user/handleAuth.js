@@ -3,6 +3,8 @@ const NoteModel = require('../../MongoDB/models/NoteModel')
 const NoteTypeModel = require('../../MongoDB/models/NoteTypeModel')
 const UserModel = require('../../MongoDB/models/UserModel')
 const FriendModel = require('../../MongoDB/models/FriendModel')
+const SetModel = require('../../MongoDB/models/SetModel')
+
 const config = require('../../config/config')
 const path = require('path')
 const fs = require("node:fs/promises")
@@ -492,6 +494,11 @@ const handleGetUsers = async (req, res) => {
         console.log('通过token权限验证')
         const userId = req.user.userId
 
+        if(!req.query.pageNum || !req.query.pageWhich) {
+            let findUserResult = await UserModel.find();
+            res.json({ code: 0, message: "请求成功", data: findUserResult });
+            return;
+        }
         const pageNum = Math.floor(Number(req.query.pageNum)) //一页数据数
         const pageWhich = Math.floor(Number(req.query.pageWhich)) //第几页
 
@@ -770,6 +777,62 @@ const handleDeleteType = async (req, res) => {
     }
 }
 
+const handleSet = async(req,res)=>{
+    try {
+        console.log("Set开始")
+        const userId = req.user.userId
+        //初始化数据
+        const initSet = {
+            base: {
+                webMaster:""
+            }
+        }
+        console.log("body-->",req.body)
+        if(!req.body.willUpdateSetData) {
+            res.json({ code: 400, message: "没有携带数据",testdata:req.body })
+            return;
+        }
+        
+        const willUpdateSetData = JSON.parse(req.body.willUpdateSetData)
+        console.log("willUpdateSetData-->",willUpdateSetData)
+
+        // 修改笔记所属类别id为默认
+        let targetSetId = "";
+        let findedSetDocument = await SetModel.findOne();
+        // 如果没有该设置集合，就新增集合(初始化)
+        if(!findedSetDocument) {
+            const insertResult = await SetModel.insertMany(initSet)
+            targetSetId = insertResult._id;
+        } else {
+            targetSetId = findedSetDocument._id;
+        }
+        console.log("targetId-->",targetSetId)
+        const updateResult = await SetModel.updateMany({_id:targetSetId},willUpdateSetData)
+        // console.log("setId是",setId)
+        // const resultUpdate = await SetModel.updateMany({type:id},{type:defaultTypeId})
+        // console.log('tagname:',updateData.tagname)
+        res.json({ code: 0, message: "test bug ok",willUpdateSetData })
+
+
+    } catch (error) {
+        res.json({ code: 401, message: "错误" })
+        console.log("error:-----", error)
+    }
+}
+const handleGetSet = async(req,res)=>{
+    try {
+        const userId = req.user.userId
+
+        let findedSetDocument = await SetModel.findOne();
+        res.json({ code: 0,data:findedSetDocument})
+
+
+    } catch (error) {
+        res.json({ code: 401, message: "错误" })
+        console.log("error:-----", error)
+    }
+}
+
 module.exports = {
     handlePersonalDetail,
     handlePublish,
@@ -797,4 +860,6 @@ module.exports = {
     handleDeleteTag,
     handleUpdateType,
     handleDeleteType,
+    handleSet,
+    handleGetSet,
 }

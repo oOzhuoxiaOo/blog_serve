@@ -56,7 +56,8 @@ let hashResult = await bcrypt.hash(req.body.newPassword, saltRounds)
 resolve: 将默认事件new Data()改为函数式返回new Data()
 
 
-
+### 关于项目部署服务器注意事项
+1
 
 Multer
 Multer 是一个node.js中间件，用于处理 multipart/form-data类型的表单数据，主要用于上传文件。
