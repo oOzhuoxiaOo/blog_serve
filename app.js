@@ -12,6 +12,7 @@ const cors = require('cors'); //跨域解决方案
 // 导入路由
 const routeUser = require('./routes/user/routeUser')
 const routeAuth = require('./routes/user/routeAuth')
+const routeWeb = require('./routes/web/routeWeb')
 
 
 
@@ -45,6 +46,7 @@ app.use(express.static(path.resolve(__dirname,'./static')))
 
 // 🚩设置路由
 app.use('/api/user',routeUser)
+app.use('/api/web',routeWeb)
 app.use('/api/user',routeAuth)
 
 

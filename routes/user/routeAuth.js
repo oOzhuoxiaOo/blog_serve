@@ -40,7 +40,6 @@ route.get('/types',mid_token.verifyToken,handleAuth.handleGetTypes)
 route.get('/notes/tags/:tagId',mid_token.verifyToken,handleAuth.handleNotesByTagId)
 route.get('/chart',mid_token.verifyToken,handleAuth.handleChart)
 route.get('/set',mid_token.verifyToken,handleAuth.handleGetSet)
-
 route.get('/notes/types/:typeId',mid_token.verifyToken,handleAuth.handleNotesByTypeId)
 route.get('/notes/types',mid_token.verifyToken,handleAuth.handleConTypes)
 route.get('/notes/tags',mid_token.verifyToken,handleAuth.handleConTags)
