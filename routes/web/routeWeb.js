@@ -31,5 +31,9 @@ route.get('/self',mid_webMaster.getWebMasterId,handleWeb.handleGetSelfByToken)
 route.get('/',mid_webMaster.getWebMasterId,handleWeb.handleGetUsers)
 route.get('/friends',mid_webMaster.getWebMasterId,handleWeb.handleGetFriendLink)
 
+// post
+route.post('/comment',mid_webMaster.getWebMasterId,handleWeb.handlePostComment)
+
+
 
 module.exports = route

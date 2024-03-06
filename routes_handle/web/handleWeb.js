@@ -277,6 +277,7 @@ const handlePublish = async (req, res) => {
 }
 
 
+
 const handleNotes = async (req, res) => {
     try {
 
@@ -289,6 +290,7 @@ const handleNotes = async (req, res) => {
         // 获取添加笔记结果 (日期降序排列)
         let resultNotes = await NoteModel
             .find({ userId: webMasterId, isDeleted: false })
+            .select('')
             .sort({ createTime: -1 })
             .skip(pageNum * (pageWhich - 1)) //跳过页数
             .limit(pageNum) // 截取一页数据
@@ -326,70 +328,8 @@ const handleNotes = async (req, res) => {
 
 }
 
-const handleUpload = async (req, res) => {
 
-    console.log('body数据')
-    console.log(req.body)
-    console.log('file数据')
-    console.log(req.file)
-    res.json({ code: 0, msg: '提交访问成功' })
-}
 
-const handleUserAvatarUpload = async (req, res) => {
-    try {
-        // 图片处理
-        const webMasterId= req.web.webMasterId
-        // 如果用户没有上传图片
-        let keys = Object.keys(req.file)
-        if (!keys.length) {
-            return res.json({ code: 400, message: "没有文件上传" })
-        }
-        // 删除旧头像
-        // 从数据库获取旧头像URL
-        const oldAvatarInfo = await UserModel
-            .findOne({ _id: webMasterId }, { avatar: 1 })
-        // 如果存在旧头像，根据旧头像url删除旧头像
-        if (oldAvatarInfo.avatar) {
-            const oldAvatarPath = path.join(config.DIRNAME, oldAvatarInfo.avatar)
-            console.log("oldAvatarPath:", oldAvatarPath)
-            await fs.unlink(oldAvatarPath)
-        }
-
-        const avatar = req.file.path.replace(/\\/g, '/') //纠正规范图片路径格式
-
-        // 新建文档实例
-        const result = await UserModel
-            .updateOne({ _id: webMasterId }, { $set: { avatar } })
-
-        res.json({ code: 0, message: "上传成功" })
-
-    } catch (error) {
-        console.log('错误情况——', error)
-        res.json({ code: 403, message: "上传失败" })
-    }
-}
-
-const handleDeleteNotesByNoteId = async (req, res) => {
-    try {
-        let noteId = req.params.noteId
-        const webMasterId= req.web.webMasterId
-        // 个人信息   
-        console.log('通过token权限验证')
-
-        // 返回该用户所有类别
-        let NotesResult = await NoteModel
-            .updateOne({ _id: noteId }, { isDeleted: true })
-
-        console.log("删除结果1", NotesResult)
-
-        res.json({ code: 204, data: NotesResult })
-
-        // res.cc('你好:' + req.user.username)
-    } catch (error) {
-        // console.log('错误信息:',error)
-        res.json({ code: 404, message: "404 Note Fount" })
-    }
-}
 
 const handleConTypes = async (req, res) => {
     try {
@@ -505,46 +445,9 @@ const handleGetUsers = async (req, res) => {
     }
 }
 
-const handlePatchUserById = async (req, res) => {
-    try {
-        console.log('通过token权限验证')
-        const { nickname, email } = req.body
-        const webMasterId= req.web.webMasterId
-        const id = req.params.id
-        // 更新数据事项，目前只支持更新nickname和email
-        let updateResult = await UserModel
-            .updateOne({ _id: id }, {
-                nickname,
-                email
-            })
 
-        res.json({ code: 0, message: "修改成功", data: updateResult })
-    } catch (error) {
-        console.log('错误信息:', error)
-    }
-}
 
-const handleDeleteUserBywebMasterId = async (req, res) => {
-    try {
-        let deletedwebMasterId = req.params.id
-        const webMasterId= req.web.webMasterId
-        // 个人信息   
-        console.log('通过token权限验证')
 
-        // 删除用户，通过更改用户状态
-        let updateResult = await UserModel
-            .updateOne({ _id: deletedwebMasterId }, { isDeleted: true })
-
-        console.log("删除结果1", updateResult)
-
-        res.json({ code: 204, message: "删除成功" })
-
-        // res.cc('你好:' + req.user.username)
-    } catch (error) {
-        // console.log('错误信息:',error)
-        res.json({ code: 404, message: "404 Note Fount" })
-    }
-}
 
 // const handleGetPanel = async (req, res) => {
 //     try {
@@ -632,84 +535,58 @@ const handleChart = async (req, res) => {
 // 类被增删改查
 
 
-// 删除该类别
-/**description:
- * 1. 删除该类别
- * 2. 将原该类别的笔记类别id，改为默认类别
- */
-const handleDeleteType = async (req, res) => {
-    try {
-        const webMasterId= req.web.webMasterId
-        const id = req.params.id
-        // 要删除的文档id
-        const deleteData = {
-            _id: req.body._id,
-        }
-        // 删除该类别
-        const deleteResult = await NoteTypeModel.deleteOne({ _id: deleteData._id })
-        // 得到默认类别id
-        const defaultType = await NoteTypeModel.findOne({typename: "default"});
-        const defaultTypeId = defaultType._id;
-        // 修改笔记所属类别id为默认
-        const resultUpdate = await NoteModel.updateMany({type:id},{type:defaultTypeId})
-        // console.log('tagname:',updateData.tagname)
-        res.json({ code: 0, message: "删除成功" })
 
 
-    } catch (error) {
-        res.json({ code: 401, message: "错误" })
-        console.log("error:-----", error)
-    }
-}
 
-const handleSet = async(req,res)=>{
-    try {
-        console.log("Set开始")
-        const webMasterId= req.web.webMasterId
-        //初始化数据
-        const initSet = {
-            base: {
-                webMaster:""
-            }
-        }
-        console.log("body-->",req.body)
-        if(!req.body.willUpdateSetData) {
-            res.json({ code: 400, message: "没有携带数据",testdata:req.body })
-            return;
-        }
-        
-        const willUpdateSetData = JSON.parse(req.body.willUpdateSetData)
-        console.log("willUpdateSetData-->",willUpdateSetData)
-
-        // 修改笔记所属类别id为默认
-        let targetSetId = "";
-        let findedSetDocument = await SetModel.findOne();
-        // 如果没有该设置集合，就新增集合(初始化)
-        if(!findedSetDocument) {
-            const insertResult = await SetModel.insertMany(initSet)
-            targetSetId = insertResult._id;
-        } else {
-            targetSetId = findedSetDocument._id;
-        }
-        console.log("targetId-->",targetSetId)
-        const updateResult = await SetModel.updateMany({_id:targetSetId},willUpdateSetData)
-        // console.log("setId是",setId)
-        // const resultUpdate = await SetModel.updateMany({type:id},{type:defaultTypeId})
-        // console.log('tagname:',updateData.tagname)
-        res.json({ code: 0, message: "test bug ok",willUpdateSetData })
-
-
-    } catch (error) {
-        res.json({ code: 401, message: "错误" })
-        console.log("error:-----", error)
-    }
-}
 const handleGetSet = async(req,res)=>{
     try {
         const webMasterId= req.web.webMasterId
 
         let findedSetDocument = await SetModel.findOne();
         res.json({ code: 0,data:findedSetDocument})
+
+
+    } catch (error) {
+        res.json({ code: 401, message: "错误" })
+        console.log("error:-----", error)
+    }
+}
+
+const handlePostComment = async(req,res)=>{
+    try {
+        const commentType = req.body.type;
+        let message = "";
+        // 如果为1，则为一级评论
+        if(commentType == 1) {
+            const commentOneItem = {
+                nickname:req.body.nickname,
+                email:req.body.email,
+                content:req.body.content,
+            }
+            // 给笔记添加评论
+            const updateData = await NoteModel.updateOne({_id:req.body.noteid},{
+                $push: {comments:commentOneItem }
+            })
+            message = "一级评论成功"
+        }
+        // 如果为2，则为二级评论
+        if(commentType == 2) {
+            const commentTwoItem = {
+                nickname:req.body.nickname,
+                email:req.body.email,
+                content:req.body.content,
+                who:req.body.who,
+                targetNickName:req.body.targetNickName
+            }
+            // 给笔记添加二级评论
+            const updateData = await NoteModel.updateOne(
+                {_id:req.body.noteid, "comments._id":req.body.who},
+                { $push: {"comments.$.children": commentTwoItem }
+            })
+            message = "二级评论成功"
+        }
+        const webMasterId= req.web.webMasterId
+        res.json({ code: 0,message})
 
 
     } catch (error) {
@@ -734,4 +611,6 @@ module.exports = {
     handleGetFriendLink,
     handleChart,
     handleGetSet,
+    handlePostComment,
+
 }

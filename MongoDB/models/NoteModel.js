@@ -5,6 +5,24 @@
 const mongoose = require('mongoose')
 
 // 创建文档模式
+
+const commentsTwoSchema = new mongoose.Schema({
+    nickname: String,
+    email: String,
+    content: String,
+    who: String,
+    targetNickName:String,
+}, { timestamps: true }) //开启时间
+
+
+const commentsSchema = new mongoose.Schema({
+    nickname: String,
+    email: String,
+    content: String,
+    children: [commentsTwoSchema]
+}, { timestamps: true }) //开启时间
+
+
 let NoteSchema = new mongoose.Schema({
     username: {
         type: String,
@@ -27,7 +45,7 @@ let NoteSchema = new mongoose.Schema({
     },
     updateTime: {
         type: Date,
-        default: ()=> new Date() //要想修改更新时间，需要手动设置文档更新upteTime
+        default: () => new Date() //要想修改更新时间，需要手动设置文档更新upteTime
     },
     mdHtml: {
         type: String
@@ -38,13 +56,14 @@ let NoteSchema = new mongoose.Schema({
             ref: 'tags' //与NoteTagModel模型关联,注意此处为集合名称，不是模型名称
         }
     ],
-    type:{
+    type: {
         type: mongoose.Schema.Types.ObjectId, //数据类型为objctid
         ref: 'types' //与NoteTagModel模型关联,注意此处为集合名称，不是模型名称
     },
     img: {
         type: Object,
     },
+    comments: [commentsSchema],
     isDeleted: {
         type: Boolean,
         default: false
