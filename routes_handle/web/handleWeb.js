@@ -89,7 +89,7 @@ const handleGetTags = async (req, res) => {
 
 
         let distinctTagsResult = await NoteModel
-            .find({ webMasterId }, { tags: 1 })
+            .find({ userId:webMasterId }, { tags: 1 })
             .distinct('tags') //distinct: e:不同的 ,,也可进行去重
 
         console.log('dist:----tags', distinctTagsResult)
@@ -119,7 +119,7 @@ const handleGetTypes = async (req, res) => {
         // 返回该用户所有类别
 
         let distinctTypesResult = await NoteModel
-            .find({ webMasterId }, { type: 1 })
+            .find({ userId:webMasterId }, { type: 1 })
             .distinct('type') //distinct: e:不同的 ,,也可进行去重
 
         let typesResult = await NoteTypeModel.find({ _id: { $in: distinctTypesResult } })
@@ -144,7 +144,7 @@ const handleNotesByTagId = async (req, res) => {
         // 返回该用户所有类别
 
         let NotesResult = await NoteModel
-            .find({ webMasterId, tags: tagId })
+            .find({ userId:webMasterId, tags: tagId })
             .sort({ createTime: -1 })
 
 
@@ -168,8 +168,33 @@ const handleNotesByTypeId = async (req, res) => {
         // 返回该用户所有类别
 
         let NotesResult = await NoteModel
-            .find({ webMasterId, type: typeId })
+            .find({ userId:webMasterId, type: typeId })
             .sort({ createTime: -1 })
+
+
+
+        res.json({ code: 0, data: NotesResult })
+
+        // res.cc('你好:' + req.user.username)
+    } catch (error) {
+        console.log('错误信息:', error)
+    }
+
+}
+// 根据类别id获取笔记
+const handleNotesByNoteId = async (req, res) => {
+    try {
+        let noteId = req.params.noteId
+        const webMasterId= req.web.webMasterId
+        // 个人信息   
+        console.log('通过token权限验证')
+
+        // 返回该用户所有类别
+
+        let NotesResult = await NoteModel
+            .findOne({ userId:webMasterId, _id:noteId })
+            .populate('tags') //填充关联数据 (populate:迁移)
+            .populate('type') //填充关联数据 (populate:迁移)
 
 
 
@@ -327,6 +352,52 @@ const handleNotes = async (req, res) => {
     }
 
 }
+const handleGetSearch = async (req, res) => {
+    try {
+
+        console.log('————搜索笔记功能———')
+        const webMasterId= req.web.webMasterId
+        let keyword = req.query.keyword;
+        let regexp = new RegExp(keyword,"i");
+        // 获取添加笔记结果 (日期降序排列)
+        let resultNotes = await NoteModel
+            .find({ userId: webMasterId, isDeleted: false, title:regexp })
+            .select('')
+            .sort({ createTime: -1 })
+            .populate('tags') //填充关联数据 (populate:迁移)
+            .populate('type') //填充关联数据 (populate:迁移)
+
+        if (!resultNotes) {
+            console.log('数据库——没有该用户笔记')
+            return res.cc('没有该用户笔记')
+        }
+
+        // 加工下笔记图片地址
+        for (let i = 0; i < resultNotes.length; i++) {
+            const item = resultNotes[i]
+            // 如果存在图
+            if (item.img.isHasImg) {
+                console.log('是否进入有img循坏')
+                const imgPath = item.img.path //img对象的path路径
+                const { DOMAIN } = config //域名
+                // 将静态资源目录名替换为空，并将域名拼接
+                const imgUrl = 'http://' + DOMAIN + imgPath.replace('static', '')
+                item.img.imgUrl = imgUrl //将图片url地址给原对象
+            }
+        }
+
+        // 标签
+
+        res.json({ code: 0, msg: '笔记查找成功', data: resultNotes })
+        console.log('笔记查找成功', resultNotes[0])
+        console.log('@query', req.query)
+
+    } catch (error) {
+        console.log('错误情况——', error)
+    }
+
+}
+
 
 
 
@@ -346,7 +417,7 @@ const handleConTypes = async (req, res) => {
 
         let distinctTypesResult = await NoteModel
             .aggregate([
-                { $match: { webMasterId } },
+                { $match: { userId:webMasterId } },
                 { $group: { _id: "$type", count: { $sum: 1 } } },
                 { $lookup: { from: "types", localField: "_id", foreignField: "_id", as: "typeInfo" } },
                 { $project: { typename: "$typeInfo.typename", count: 1 } },
@@ -382,7 +453,7 @@ const handleConTags = async (req, res) => {
 
         let result = await NoteModel
             .aggregate([
-                { $match: { webMasterId } },
+                { $match: { userId:webMasterId } },
                 { $unwind: "$tags" },
                 { $group: { _id: "$tags", count: { $sum: 1 } } },
                 { $lookup: { from: "tags", localField: "_id", foreignField: "_id", as: "tagInfo" } },
@@ -612,5 +683,7 @@ module.exports = {
     handleChart,
     handleGetSet,
     handlePostComment,
+    handleNotesByNoteId,
+    handleGetSearch
 
 }
