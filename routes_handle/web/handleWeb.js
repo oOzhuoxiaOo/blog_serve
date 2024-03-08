@@ -48,7 +48,8 @@ const handlePersonalDetail = async (req, res) => {
 
 
 
-
+        const oldAvatar = findUserResult.avatar;
+        findUserResult.avatar = 'http://' + config.DOMAIN + oldAvatar.replace('static', '');
         // 个人信息集合
         let personalInfo = {
             userInfo: findUserResult,
