@@ -35,18 +35,6 @@ const handlePersonalDetail = async (req, res) => {
         let notesCount = notesResult.length
         let typeCount = distinctTypeResult.length
 
-        // for(let i = 0; i < NotesResult.length; i++) {
-        //     let tags = NotesResult[i].tags
-        //     for(let val of tags) {
-        //         // 将new Objectid转为字符串再传入_tagsArr数组
-        //         _tagsArr.push(val.toString())
-        //     }
-        // }
-        // 数组去重
-        // let tagsArr = Array.from(new Set(arr))
-        // let tagsCount = tagsArr.length
-
-
 
         const oldAvatar = findUserResult.avatar;
         findUserResult.avatar = 'http://' + config.DOMAIN + oldAvatar.replace('static', '');
@@ -78,7 +66,6 @@ const handleGetTags = async (req, res) => {
     try {
         // 个人信息   
         console.log('通过token权限验证')
-
         const webMasterId= req.web.webMasterId
         let findUserResult = await UserModel.findOne({ _id: webMasterId }, { password: 0 }) //查询个人信息，去掉password字段
         if (!findUserResult) {
@@ -302,8 +289,6 @@ const handlePublish = async (req, res) => {
 
 }
 
-
-
 const handleNotes = async (req, res) => {
     try {
 
@@ -355,7 +340,6 @@ const handleNotes = async (req, res) => {
 }
 const handleGetSearch = async (req, res) => {
     try {
-
         console.log('————搜索笔记功能———')
         const webMasterId= req.web.webMasterId
         let keyword = req.query.keyword;

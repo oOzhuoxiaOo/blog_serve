@@ -27,10 +27,10 @@ const handlePersonalDetail = async (req, res) => {
             return res.cc('不存在该用户')
         }
 
-        // 标签数🚩 笔记数 类别数
+        // 标签数�? 笔记�? 类别�?
         let notesResult = await NoteModel.find({ userId }, { tags: 1 })
-        let distinctTagsResult = await NoteModel.find({ userId }, { tags: 1 }).distinct('tags') //distinct: e:不同的 ,,也可进行去重
-        let distinctTypeResult = await NoteModel.find({ userId }, { tags: 1 }).distinct('type') //distinct: e:不同的 ,,也可进行去重
+        let distinctTagsResult = await NoteModel.find({ userId }, { tags: 1 }).distinct('tags') //distinct: e:不同�? ,,也可进行去重
+        let distinctTypeResult = await NoteModel.find({ userId }, { tags: 1 }).distinct('type') //distinct: e:不同�? ,,也可进行去重
         let tagsCount = distinctTagsResult.length
         let notesCount = notesResult.length
         let typeCount = distinctTypeResult.length
@@ -70,7 +70,7 @@ const handlePersonalDetail = async (req, res) => {
 
 }
 const handleIsLogin = async (req, res) => {
-    res.json({ code: 0, msg: '已登录' })
+    res.json({ code: 0, msg: '已登�?' })
 }
 
 const handleGetTags = async (req, res) => {
@@ -85,12 +85,12 @@ const handleGetTags = async (req, res) => {
             return res.cc('不存在该用户')
         }
 
-        // 返回该用户所有标签
+        // 返回该用户所有标�?
 
 
         let distinctTagsResult = await NoteModel
             .find({ userId }, { tags: 1 })
-            .distinct('tags') //distinct: e:不同的 ,,也可进行去重
+            .distinct('tags') //distinct: e:不同�? ,,也可进行去重
 
         console.log('dist:----tags', distinctTagsResult)
 
@@ -116,11 +116,11 @@ const handleGetTypes = async (req, res) => {
             return res.cc('不存在该用户')
         }
 
-        // 返回该用户所有类别
+        // 返回该用户所有类�?
 
         let distinctTypesResult = await NoteModel
             .find({ userId }, { type: 1 })
-            .distinct('type') //distinct: e:不同的 ,,也可进行去重
+            .distinct('type') //distinct: e:不同�? ,,也可进行去重
 
         let typesResult = await NoteTypeModel.find({ _id: { $in: distinctTypesResult } })
 
@@ -141,7 +141,7 @@ const handleNotesByTagId = async (req, res) => {
         // 个人信息   
         console.log('通过token权限验证')
 
-        // 返回该用户所有类别
+        // 返回该用户所有类�?
 
         let NotesResult = await NoteModel
             .find({ userId, tags: tagId })
@@ -165,7 +165,7 @@ const handleNotesByTypeId = async (req, res) => {
         // 个人信息   
         console.log('通过token权限验证')
 
-        // 返回该用户所有类别
+        // 返回该用户所有类�?
 
         let NotesResult = await NoteModel
             .find({ userId, type: typeId })
@@ -205,10 +205,10 @@ const handlePublish = async (req, res) => {
         // 遍历存储插入收集标签数据
         console.log('tags数据:', tags)
         for (const tagname of tags) {
-            // 查找标签是否以存在
+            // 查找标签是否以存�?
             let tag = await NoteTagModel.findOne({ tagname })
 
-            // 不存在则追加新标签
+            // 不存在则追加新标�?
             if (!tag) {
                 tag = await NoteTagModel.create({ tagname })
                 // 将追加后新标签的索引收集
@@ -229,19 +229,19 @@ const handlePublish = async (req, res) => {
 
         // 如果不存在该标签
         if (!resultType) {
-            // 插入该标签
+            // 插入该标�?
             resultType = await NoteTypeModel.create({ typename })
         }
 
 
 
         // 添加笔记处理
-        // console.log('————笔记添加功能————')
+        // console.log('————笔记添加功能———�?')
         // console.log('通过token权限验证')
         // 获取userId,目的是将userid存储笔记字段
         const resultUser = await UserModel.findOne({ username: req.user.username })
         if (!resultUser) {
-            // 如果获取失败(注意，这种失败是查询失败，而不是查询异常错误，异常错误会被try捕获到)
+            // 如果获取失败(注意，这种失败是查询失败，而不是查询异常错误，异常错误会被try捕获�?)
             console.log('数据库——没有该用户信息')
             return res.cc('不存在该用户')
         }
@@ -258,12 +258,12 @@ const handlePublish = async (req, res) => {
             type: resultType._id,
             img: imgFile
         })
-        // 持久化保存到数据库
+        // 持久化保存到数据�?
         let newNote = await docNote.save()
 
         if (!newNote) {
-            console.log('数据库——添加用户信息失败')
-            return res.cc('新笔记添加失败')
+            console.log('数据库——添加用户信息失�?')
+            return res.cc('新笔记添加失�?')
         }
         res.cc('笔记添加成功', 0)
         console.log('新笔记已添加', newNote)
@@ -271,7 +271,7 @@ const handlePublish = async (req, res) => {
 
 
     } catch (error) {
-        console.log('错误情况——', error)
+        console.log('错误情况—�?', error)
     }
 
 }
@@ -280,43 +280,43 @@ const handlePublish = async (req, res) => {
 const handleNotes = async (req, res) => {
     try {
 
-        console.log('————查找笔记s功能———')
+        console.log('————查找笔记s功能——�?')
         console.log('通过token权限验证')
         // 获取userId,目的是获取该用户的id用来查找获取笔记
         const resultUser = await UserModel.findOne({ username: req.user.username })
         if (!resultUser) {
-            // 如果获取失败(注意，这种失败是查询失败，而不是查询异常错误，异常错误会被try捕获到)
+            // 如果获取失败(注意，这种失败是查询失败，而不是查询异常错误，异常错误会被try捕获�?)
             console.log('数据库——没有该用户信息')
             return res.cc('不存在该用户')
         }
         console.log('数据库——存在该用户信息:', resultUser)
 
         const pageNum = Math.floor(Number(req.query.pageNum)) //一页数据数
-        const pageWhich = Math.floor(Number(req.query.pageWhich)) //第几页
+        const pageWhich = Math.floor(Number(req.query.pageWhich)) //第几�?
 
         // 获取添加笔记结果 (日期降序排列)
         let resultNotes = await NoteModel
             .find({ userId: resultUser._id, isDeleted: false })
             .sort({ createTime: -1 })
             .skip(pageNum * (pageWhich - 1)) //跳过页数
-            .limit(pageNum) // 截取一页数据
+            .limit(pageNum) // 截取一页数�?
             .populate('tags') //填充关联数据 (populate:迁移)
             .populate('type') //填充关联数据 (populate:迁移)
 
         if (!resultNotes) {
             console.log('数据库——没有该用户笔记')
-            return res.cc('没有该用户笔记')
+            return res.cc('没有该用户笔�?')
         }
 
         // 加工下笔记图片地址
         for (let i = 0; i < resultNotes.length; i++) {
             const item = resultNotes[i]
-            // 如果存在图
+            // 如果存在�?
             if (item.img.isHasImg) {
                 console.log('是否进入有img循坏')
                 const imgPath = item.img.path //img对象的path路径
                 const { DOMAIN } = config //域名
-                // 将静态资源目录名替换为空，并将域名拼接
+                // 将静态资源目录名替换为空，并将域名拼�?
                 const imgUrl = 'http://' + DOMAIN + imgPath.replace('static', '')
                 item.img.imgUrl = imgUrl //将图片url地址给原对象
             }
@@ -329,7 +329,61 @@ const handleNotes = async (req, res) => {
         console.log('@query', req.query)
 
     } catch (error) {
-        console.log('错误情况——', error)
+        console.log('错误情况—�?', error)
+    }
+
+}
+const handleGetSearch = async (req, res) => {
+    try {
+
+        console.log('————搜索笔记功能——�?')
+        const resultUser = await UserModel.findOne({ username: req.user.username })
+        if (!resultUser) {
+            // 如果获取失败(注意，这种失败是查询失败，而不是查询异常错误，异常错误会被try捕获�?)
+            console.log('数据库——没有该用户信息')
+            return res.cc('不存在该用户')
+        }
+        let keyword = req.query.keyword;
+        const pageNum = Math.floor(Number(req.query.pageNum)) //一页数据数
+        const pageWhich = Math.floor(Number(req.query.pageWhich)) //第几�?
+        let regexp = new RegExp(keyword, "i");
+        // 获取添加笔记结果 (日期降序排列)
+        let resultNotes = await NoteModel
+            .find({ userId: resultUser._id, isDeleted: false, title: regexp })
+            .select('')
+            .sort({ createTime: -1 })
+            .skip(pageNum * (pageWhich - 1)) //跳过页数
+            .limit(pageNum) // 截取一页数�?
+            .populate('tags') //填充关联数据 (populate:迁移)
+            .populate('type') //填充关联数据 (populate:迁移)
+
+        if (!resultNotes) {
+            console.log('数据库——没有该用户笔记')
+            return res.cc('没有该用户笔�?')
+        }
+
+        // 加工下笔记图片地址
+        for (let i = 0; i < resultNotes.length; i++) {
+            const item = resultNotes[i]
+            // 如果存在�?
+            if (item.img.isHasImg) {
+                console.log('是否进入有img循坏')
+                const imgPath = item.img.path //img对象的path路径
+                const { DOMAIN } = config //域名
+                // 将静态资源目录名替换为空，并将域名拼�?
+                const imgUrl = 'http://' + DOMAIN + imgPath.replace('static', '')
+                item.img.imgUrl = imgUrl //将图片url地址给原对象
+            }
+        }
+
+        // 标签
+
+        res.json({ code: 0, msg: '笔记查找成功', data: resultNotes })
+        console.log('笔记查找成功', resultNotes[0])
+        console.log('@query', req.query)
+
+    } catch (error) {
+        console.log('错误情况—�?', error)
     }
 
 }
@@ -352,11 +406,11 @@ const handleUserAvatarUpload = async (req, res) => {
         if (!keys.length) {
             return res.json({ code: 400, message: "没有文件上传" })
         }
-        // 删除旧头像
+        // 删除旧头�?
         // 从数据库获取旧头像URL
         const oldAvatarInfo = await UserModel
             .findOne({ _id: userId }, { avatar: 1 })
-        // 如果存在旧头像，根据旧头像url删除旧头像
+        // 如果存在旧头像，根据旧头像url删除旧头�?
         if (oldAvatarInfo.avatar) {
             const oldAvatarPath = path.join(config.DIRNAME, oldAvatarInfo.avatar)
             console.log("oldAvatarPath:", oldAvatarPath)
@@ -372,7 +426,7 @@ const handleUserAvatarUpload = async (req, res) => {
         res.json({ code: 0, message: "上传成功" })
 
     } catch (error) {
-        console.log('错误情况——', error)
+        console.log('错误情况—�?', error)
         res.json({ code: 403, message: "上传失败" })
     }
 }
@@ -384,7 +438,7 @@ const handleDeleteNotesByNoteId = async (req, res) => {
         // 个人信息   
         console.log('通过token权限验证')
 
-        // 返回该用户所有类别
+        // 返回该用户所有类�?
         let NotesResult = await NoteModel
             .updateOne({ _id: noteId }, { isDeleted: true })
 
@@ -410,16 +464,15 @@ const handleConTypes = async (req, res) => {
             return res.cc('不存在该用户')
         }
 
-        // 返回该用户所有类别+数
+        // 返回该用户所有类�?+�?
 
-        let distinctTypesResult = await NoteModel
+        let distinctTypesResult = await NoteTypeModel
             .aggregate([
-                { $match: { userId } },
-                { $group: { _id: "$type", count: { $sum: 1 } } },
-                { $lookup: { from: "types", localField: "_id", foreignField: "_id", as: "typeInfo" } },
-                { $project: { typename: "$typeInfo.typename", count: 1 } },
-                { $unwind: "$typename" }
+                { $lookup: { from: "notes", localField: "_id", foreignField: "type", as: "typeInfo" } },
+                { $match: { $or: [{ "typeInfo.userId": userId }, { "typeInfo": { $size: 0 } }] } },
+                { $project: { typename: 1, count: { $size: "$typeInfo" } } }
             ])
+
 
 
         // let typesResult = await NoteTypeModel.find({ _id: { $in: distinctTypesResult } })
@@ -446,16 +499,13 @@ const handleConTags = async (req, res) => {
             return res.cc('不存在该用户')
         }
 
-        // 返回该用户所有标签+数
+        // 返回该用户所有标�?+�?
 
-        let result = await NoteModel
+        let result = await NoteTagModel
             .aggregate([
-                { $match: { userId } },
-                { $unwind: "$tags" },
-                { $group: { _id: "$tags", count: { $sum: 1 } } },
-                { $lookup: { from: "tags", localField: "_id", foreignField: "_id", as: "tagInfo" } },
-                { $project: { tagname: "$tagInfo.tagname", count: 1 } },
-                { $unwind: "$tagname" }
+                { $lookup: { from: "notes", localField: "_id", foreignField: "tags", as: "tagInfo" } },
+                { $match: { $or: [{ "tagInfo.userId": userId }, { "tagInfo": { $size: 0 } }] } },
+                { $project: { tagname: 1, count: { $size: "$tagInfo" } } }
             ])
 
         // let typesResult = await NoteTypeModel.find({ _id: { $in: distinctTypesResult } })
@@ -475,11 +525,11 @@ const handleGetSelfByToken = async (req, res) => {
         const userId = req.user.userId
         let findUserResult = await UserModel.findOne({ _id: userId }, { password: 0 }) //查询个人信息，去掉password字段
         console.log("FindUserResult", findUserResult)
-        // 如果没有设置头像，直接响应
+        // 如果没有设置头像，直接响�?
         if (!findUserResult.avatar) {
             return res.json({ code: 0, message: "请求成功", data: findUserResult })
         }
-        // 如果设置头像了 补全头像路径
+        // 如果设置头像�? 补全头像路径
         findUserResult.avatar = "http://" + config.DOMAIN + "/" + findUserResult.avatar.replace(/static\//g, "")
         res.json({ code: 0, message: "请求成功", data: findUserResult })
 
@@ -488,19 +538,19 @@ const handleGetSelfByToken = async (req, res) => {
     }
 }
 
-// 获取所有用户信息
+// 获取所有用户信�?
 const handleGetUsers = async (req, res) => {
     try {
         console.log('通过token权限验证')
         const userId = req.user.userId
 
-        if(!req.query.pageNum || !req.query.pageWhich) {
+        if (!req.query.pageNum || !req.query.pageWhich) {
             let findUserResult = await UserModel.find();
             res.json({ code: 0, message: "请求成功", data: findUserResult });
             return;
         }
         const pageNum = Math.floor(Number(req.query.pageNum)) //一页数据数
-        const pageWhich = Math.floor(Number(req.query.pageWhich)) //第几页
+        const pageWhich = Math.floor(Number(req.query.pageWhich)) //第几�?
 
         let findUserResult = await UserModel
             .find({ isDeleted: false }, { password: 0, __v: 0 }) //查询个人信息，去掉password字段
@@ -539,7 +589,7 @@ const handleDeleteUserByUserId = async (req, res) => {
         // 个人信息   
         console.log('通过token权限验证')
 
-        // 删除用户，通过更改用户状态
+        // 删除用户，通过更改用户状�?
         let updateResult = await UserModel
             .updateOne({ _id: deletedUserId }, { isDeleted: true })
 
@@ -651,7 +701,7 @@ const handleDeleteFriendLink = async (req, res) => {
         const userId = req.user.userId
         // 要删除的友情链接id
         const id = req.params.id
-        const resultUser = await UserModel.updateOne({ _id: userId }, { $pull: { friends: id } })
+        const resultUser = await UserModel.updateOne({ _id: userId }, { $pull: { "friends": id } })
         const resultFriend = await FriendModel.deleteOne({ _id: id })
         console.log("resultUser:", resultUser)
         console.log("resultFriend:", resultFriend)
@@ -668,20 +718,23 @@ const handleChart = async (req, res) => {
     try {
         const userId = req.user.userId
         const noteCount = await NoteModel.find({ userId: userId }).count()
-        console.log("count1",noteCount)
+        console.log("count1", noteCount)
         const tagCount = await NoteTagModel.find().count();
-        console.log("count2",tagCount)
+        console.log("count2", tagCount)
         const typeCount = await NoteTypeModel.find().count();
-        console.log("count3",typeCount)
-        const friendCount = (await UserModel.findOne({_id:userId})).friends.length
-        console.log("count4",friendCount)
+        console.log("count3", typeCount)
+        const friendCount = (await UserModel.findOne({ _id: userId })).friends.length
+        console.log("count4", friendCount)
+        const userCount = await UserModel.find({}).count();
+
         const resultData = {
             noteCount,
             tagCount,
             typeCount,
-            friendCount
+            friendCount,
+            userCount
         }
-        console.log("resultData----------",resultData)
+        console.log("resultData----------", resultData)
         res.json({ code: 0, message: "获取成功", data: resultData })
     } catch (error) {
         res.json({ code: 401, message: "错误" })
@@ -699,7 +752,7 @@ const handleUpdateTag = async (req, res) => {
             tagname: req.body.tagname,
         }
         const updateResult = await NoteTagModel.updateOne({ _id: id }, updateData)
-        console.log('tagname:',updateData.tagname)
+        console.log('tagname:', updateData.tagname)
         res.json({ code: 0, message: "修改成功" })
 
 
@@ -737,7 +790,7 @@ const handleUpdateType = async (req, res) => {
             typename: req.body.typename,
         }
         const updateResult = await NoteTypeModel.updateOne({ _id: id }, updateData)
-        console.log('typename:',updateData.typename)
+        console.log('typename:', updateData.typename)
         res.json({ code: 0, message: "修改成功" })
 
 
@@ -747,10 +800,10 @@ const handleUpdateType = async (req, res) => {
     }
 }
 
-// 删除该类别
+// 删除该类�?
 /**description:
- * 1. 删除该类别
- * 2. 将原该类别的笔记类别id，改为默认类别
+ * 1. 删除该类�?
+ * 2. 将原该类别的笔记类别id，改为默认类�?
  */
 const handleDeleteType = async (req, res) => {
     try {
@@ -760,13 +813,13 @@ const handleDeleteType = async (req, res) => {
         const deleteData = {
             _id: req.body._id,
         }
-        // 删除该类别
+        // 删除该类�?
         const deleteResult = await NoteTypeModel.deleteOne({ _id: deleteData._id })
         // 得到默认类别id
-        const defaultType = await NoteTypeModel.findOne({typename: "default"});
+        const defaultType = await NoteTypeModel.findOne({ typename: "default" });
         const defaultTypeId = defaultType._id;
-        // 修改笔记所属类别id为默认
-        const resultUpdate = await NoteModel.updateMany({type:id},{type:defaultTypeId})
+        // 修改笔记所属类别id为默�?
+        const resultUpdate = await NoteModel.updateMany({ type: id }, { type: defaultTypeId })
         // console.log('tagname:',updateData.tagname)
         res.json({ code: 0, message: "删除成功" })
 
@@ -777,41 +830,134 @@ const handleDeleteType = async (req, res) => {
     }
 }
 
-const handleSet = async(req,res)=>{
+const handleSetAdmin = async (req, res) => {
     try {
-        console.log("Set开始")
-        const userId = req.user.userId
-        //初始化数据
-        const initSet = {
-            base: {
-                webMaster:""
-            }
-        }
-        console.log("body-->",req.body)
-        if(!req.body.willUpdateSetData) {
-            res.json({ code: 400, message: "没有携带数据",testdata:req.body })
+        console.log("Set开�?")
+        const userId = req.user.userId;
+        if (!req.body.willUpdateSetData) {
+            res.json({ code: 400, message: "没有携带数据", testdata: req.body })
             return;
         }
-        
-        const willUpdateSetData = JSON.parse(req.body.willUpdateSetData)
-        console.log("willUpdateSetData-->",willUpdateSetData)
 
-        // 修改笔记所属类别id为默认
-        let targetSetId = "";
+        const willUpdateSetData = JSON.parse(req.body.willUpdateSetData)
+        console.log("willUpdateSetData-->", willUpdateSetData)
+
+        // 修改笔记所属类别id为默�?
+        let targetSetId = willUpdateSetData.userid;
         let findedSetDocument = await SetModel.findOne();
-        // 如果没有该设置集合，就新增集合(初始化)
-        if(!findedSetDocument) {
+        // 如果没有该设置集合，就新增集�?(初始�?)
+        if (!findedSetDocument) {
             const insertResult = await SetModel.insertMany(initSet)
             targetSetId = insertResult._id;
         } else {
             targetSetId = findedSetDocument._id;
         }
-        console.log("targetId-->",targetSetId)
-        const updateResult = await SetModel.updateMany({_id:targetSetId},willUpdateSetData)
-        // console.log("setId是",setId)
+        console.log("targetId-->", targetSetId)
+        const updateResult0 =  await SetModel.updateMany({ "admin.webMaster":true }, { "admin.webMaster":false })
+        const updateResult = await SetModel.updateMany({ userid: willUpdateSetData.userid }, { "admin.webMaster":true })
+        // console.log("setId�?",setId)
         // const resultUpdate = await SetModel.updateMany({type:id},{type:defaultTypeId})
         // console.log('tagname:',updateData.tagname)
-        res.json({ code: 0, message: "test bug ok",willUpdateSetData })
+        res.json({ code: 0, message: "test bug ok", willUpdateSetData })
+
+    } catch (error) {
+        res.json({ code: 401, message: "错误" })
+        console.log("error:-----", error)
+    }
+}
+
+const handleSet = async (req, res) => {
+    try {
+        console.log("Set开�?")
+        const userId = req.user.userId
+        //初始化数�?
+        // const initSet = {
+        //     base: {
+        //         webMaster: ""
+        //     }
+        // }
+        // console.log("body-->", req.body)
+        if (!req.body.willUpdateSetData) {
+            res.json({ code: 400, message: "没有携带数据", testdata: req.body })
+            return;
+        }
+
+        const willUpdateSetData = JSON.parse(req.body.willUpdateSetData)
+        console.log("willUpdateSetData-->", willUpdateSetData)
+
+        // 修改笔记所属类别id为默�?
+        // let findedSetDocument = await SetModel.findOne({userid:userId});
+        let targetSetId = "";
+        // 如果没有该设置集合，就新增集�?(初始�?)
+        // if (!findedSetDocument) {
+        //     const insertResult = await SetModel.insertMany(initSet)
+        //     targetSetId = insertResult._id;
+        // } else {
+        //     targetSetId = findedSetDocument._id;
+        // }
+        console.log("targetId-->", targetSetId)
+        const updateResult = await SetModel.updateMany({ userid: userId }, { web: willUpdateSetData })
+        // console.log("setId�?",setId)
+        // const resultUpdate = await SetModel.updateMany({type:id},{type:defaultTypeId})
+        // console.log('tagname:',updateData.tagname)
+        res.json({ code: 0, message: "test bug ok", willUpdateSetData })
+
+    } catch (error) {
+        res.json({ code: 401, message: "错误" })
+        console.log("error:-----", error)
+    }
+}
+const handleGetSet = async (req, res) => {
+    try {
+        const userId = req.user.userId
+        let findedSetDocument = await SetModel.findOne({ userid: userId });
+        // console.log("û�ҵ�:",findedSetDocument)
+        if (!findedSetDocument) {
+            let insertData =   {
+                "userid": userId,
+                "web": {
+                    "hobby": {
+                        "totalTitle": "xx",
+                        "totalDescription": "xx",
+                        "children": [
+                            {
+                                "imgUrl": "https://pic4.zhimg.com/v2-e80b18113caca330b909bf13cf8941a7_r.jpg?source=1940ef5c",
+                                "title": "����",
+                                "description": "�������Clannad��,��Ȼϲ���滭���κγ���һ˫�����ô����֣����۽������ʲô���⣬�Ҷ�ѡ��Է���˯�����򶹶�",
+
+                            },
+                            {
+                                "imgUrl": "https://www.acgtubao.com/wp-content/uploads/2019/01/50745545_p0.jpg",
+                                "title": "Music",
+                                "description": "ϲ�������֣�������������",
+
+                            },
+                            {
+                                "imgUrl": "https://th.bing.com/th/id/OIP.JhlQ9PrVatvoepmHQ7JznAHaHa?rs=1&pid=ImgDetMain",
+                                "title": "Game",
+                                "description": "ϲ������Ϸ",
+
+                            }
+                        ]
+                    },
+                    "aboutMe": "��������",
+                    "announcement": "��ӭ�����ҵ�Сվ",
+                    "originIntroduction": "������Ȥ�Լ���¼",
+                    "isTheme": true,
+                    "backgroundImage": "https://gss0.baidu.com/7Po3dSag_xI4khGko9WTAnF6hhy/zhidao/pic/item/3b292df5e0fe9925538aff9c33a85edf8cb1717c.jpg"
+                },
+                "admin": {
+                    "webMaster": true,
+                    "isTheme": true
+                },
+
+            }
+
+            let insertReult = await SetModel.insertMany({insertData})
+            console.log("������",insertReult)
+            findedSetDocument = await SetModel.findOne({ userid: userId });
+        }
+        res.json({ code: 0, data: findedSetDocument })
 
 
     } catch (error) {
@@ -819,12 +965,13 @@ const handleSet = async(req,res)=>{
         console.log("error:-----", error)
     }
 }
-const handleGetSet = async(req,res)=>{
+const handleGetSetWebmaster = async (req, res) => {
     try {
         const userId = req.user.userId
-
-        let findedSetDocument = await SetModel.findOne();
-        res.json({ code: 0,data:findedSetDocument})
+        const webmaster = await SetModel.findOne({"admin.webMaster":true})
+        res.json({ code: 0, data: {
+            userid:webmaster.userid
+        } })
 
 
     } catch (error) {
@@ -862,4 +1009,7 @@ module.exports = {
     handleDeleteType,
     handleSet,
     handleGetSet,
+    handleGetSearch,
+    handleSetAdmin,
+    handleGetSetWebmaster
 }

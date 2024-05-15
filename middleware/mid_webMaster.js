@@ -1,8 +1,9 @@
 const SetModel = require('../MongoDB/models/SetModel')
 
 const getWebMasterId = async (req, res, next) => {
-    const settingDocument = await SetModel.findOne({});
-    const id = settingDocument.base.webMaster;
+    const settingDocument = await SetModel.findOne({"admin.webMaster":true});
+    console.log("settingDocument:",settingDocument)
+    const id = settingDocument.userid;
     console.log("id 有没?",id)
 
     if (!id) {

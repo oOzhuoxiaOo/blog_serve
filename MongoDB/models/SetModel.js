@@ -6,9 +6,29 @@ const mongoose = require('mongoose')
 
 // 创建文档模式
 let SetSchema = new mongoose.Schema({
-    base: {
-        webMaster: String
+    userid:String,
+    web: {
+        aboutMe:String,
+        announcement:String,
+        originIntroduction:String,
+        isTheme:Boolean,
+        backgroundImage:String,
+        hobby: {
+            totalTitle:String,
+            totalDescription:String,
+            children:[
+                {
+                    imgUrl:String,
+                    title:String,
+                    description:String
+                }
+            ]
+        }
     },
+    admin: {
+        webMaster:Boolean,
+        isTheme:Boolean,
+    }
 })
 
 // 创建文档模型对象

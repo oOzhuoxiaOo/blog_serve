@@ -12,31 +12,35 @@
 </head>
 
 <body>
-    <script type="module">
-        import * as THREE from 'https://unpkg.com/three/build/three.module.js';
-
-        // Our Javascript will go here.
-
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
-
-        const geometry = new THREE.BoxGeometry(1, 1, 1);
-        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-        const cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
-
-        camera.position.z = 5;
-        function animate() {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera);
+    <script>
+        async function getTime() {
+            return new Promise((resolve,reject)=>{
+                setTimeout(()=>{
+                    reject("0点了")
+                },2000)
+            })
         }
-        animate();
-        cube.rotation.x += 0.01;
-        cube.rotation.y += 0.01;
+        
+        async function test() {
+            try {
+                let response = await getTime();
+                console.log("test try")
+                // console.log(response)
+            } catch (error) {
+                console.log("test catch")
+                return new Promise.reject(error);
+            }
+        }
+        async function test2(){
+            try {
+                console.log("test2 try")
+                await test();
+            } catch (error) {
+                console.log("test2 catch")
+                console.log(error)
+            }
+        }
+        test2()
 
     </script>
 </body>

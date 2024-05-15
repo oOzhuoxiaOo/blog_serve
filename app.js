@@ -7,7 +7,7 @@ const mid_send = require('./middleware/mid_send')
 const cookieParser = require('cookie-parser')
 
 const cors = require('cors'); //跨域解决方案
-
+const userAgent = require('express-useragent');
 
 // 导入路由
 const routeUser = require('./routes/user/routeUser')
@@ -31,6 +31,8 @@ app.use(cors({
     // credentials:true, //允许携带凭证(cookie)
     origin:'*',
 })) //允许所有源跨域
+// 使用 useragent 中间件
+app.use(userAgent.express());
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))

@@ -15,7 +15,7 @@ console.log('我是路由Auth')
 // 设置中间件
 
 
-
+const SettingController = require("../../controllers/admin/SettingController");
 
 
 
@@ -29,17 +29,20 @@ route.post('/publish',mid_token.verifyToken,m_upload.upload.single('noteImg'),ha
 route.post('/avatar/upload',mid_token.verifyToken,m_upload.avatarUpload.single('avatarImg'),handleAuth.handleUserAvatarUpload)
 route.post('/friends/write',mid_token.verifyToken,handleAuth.handleAddFriendLink)
 route.post('/set',mid_token.verifyToken,handleAuth.handleSet)
+route.post('/setting/admin',mid_token.verifyToken,handleAuth.handleSetAdmin)
 // single('<文件字段名>')
 route.post('/upload',mid_token.verifyToken,m_upload.upload.single('noteImg'),handleAuth.handleUpload)
 // get
 route.get('/me',mid_token.verifyToken,handleAuth.handlePersonalDetail)
+route.get('/setting/webmaster',mid_token.verifyToken,handleAuth.handleGetSetWebmaster)
 route.get('/auth/login',mid_token.verifyToken,handleAuth.handleIsLogin)
 route.get('/notes',mid_token.verifyToken,handleAuth.handleNotes)
+route.get('/notes/search',mid_token.verifyToken,handleAuth.handleGetSearch)
 route.get('/tags',mid_token.verifyToken,handleAuth.handleGetTags)
 route.get('/types',mid_token.verifyToken,handleAuth.handleGetTypes)
 route.get('/notes/tags/:tagId',mid_token.verifyToken,handleAuth.handleNotesByTagId)
 route.get('/chart',mid_token.verifyToken,handleAuth.handleChart)
-route.get('/set',mid_token.verifyToken,handleAuth.handleGetSet)
+route.get('/set',mid_token.verifyToken,SettingController.apiGet)
 route.get('/notes/types/:typeId',mid_token.verifyToken,handleAuth.handleNotesByTypeId)
 route.get('/notes/types',mid_token.verifyToken,handleAuth.handleConTypes)
 route.get('/notes/tags',mid_token.verifyToken,handleAuth.handleConTags)

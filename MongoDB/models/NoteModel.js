@@ -12,6 +12,8 @@ const commentsTwoSchema = new mongoose.Schema({
     content: String,
     who: String,
     targetNickName:String,
+    os:String,
+    browser:String
 }, { timestamps: true }) //开启时间
 
 
@@ -19,7 +21,9 @@ const commentsSchema = new mongoose.Schema({
     nickname: String,
     email: String,
     content: String,
-    children: [commentsTwoSchema]
+    children: [commentsTwoSchema],
+    os:String,
+    browser:String,
 }, { timestamps: true }) //开启时间
 
 
